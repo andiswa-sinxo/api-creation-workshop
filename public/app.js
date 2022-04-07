@@ -30,6 +30,16 @@ function filterData() {
 		});
 }
 
+// function filterData() {
+// 	axios
+// 		.get(`/api/garments?gender=${genderFilter}&season=${seasonFilter}`)
+// 		.then(function(result) {
+// 			searchResultsElem.innerHTML = garmentsTemplate({
+// 				garments : result.data.garments
+// 			})
+// 		});
+
+
 priceRangeElem.addEventListener('change', function(evt){
 	const maxPrice = evt.target.value;
 	showPriceRangeElem.innerHTML = maxPrice;

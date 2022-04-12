@@ -1,18 +1,46 @@
+// enable the req.body object - to allow us to use HTML forms
+// when doing post requests
+// put this before you declare any routes
+const express = require('express');
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+
 // import the dataset to be used here
 const garments = require('./garments.json');
 
-const express = require('express');
-const app = express();
+
 
 // enable the static folder...
 app.use(express.static('public'));
 
 
-app.get('/api/garments', function(req, res){
-	// note that this route just send JSON data to the browser
-	// there is no template
-	res.json({garments});
-});
+// fields to be read from the DOM
+// const domFields = {
+// 	{
+// 		description: "Rainbow unicorn sweater",
+// 		price: 799.00,
+// 		img : "placeholder.png",
+// 		gender : "Unisex",
+// 		season: "All season"
+// 	}
+  
+  
+//   axios.post('/api/garments', domFields)
+// 	.then((result) => {
+// 		// show snackbar - with success message
+// 		console.log(result.data);
+// 	})
+// 	.catch(err => {
+// 	  console.log(err);
+// 	});
+  
+// app.get('/api/garments', function(req, res){
+// 	// note that this route just send JSON data to the browser
+// 	// there is no template
+// 	res.json({garments});
+// });
 
 
 app.get('/api/garments', function(req, res){
@@ -54,6 +82,49 @@ app.get('/api/garments/price/:price', function(req, res){
 		garments : filteredGarments
 	});
 });
+
+
+app.post('/api/garments', (req, res) => {
+
+	// get the fields send in from req.body
+	const {
+		description,
+		img,
+		gender,
+		season,
+		price
+	} = req.body;
+
+	// add some validation to see if all the fields are there.
+	// only 3 fields are made mandatory here
+	// you can change that
+
+	if (!description || !img || !price) {
+		res.json({
+			status: 'error',
+			message: 'Required data not supplied',
+		});
+	} else {
+
+		// you can check for duplicates here using garments.find
+		
+		// add a new entry into the garments list
+		garments.push({
+			description,
+			img,
+			gender,
+			season,
+			price
+		});
+
+		res.json({
+			status: 'success',
+			message: 'New garment added.',
+		});
+	}
+
+});
+
 
 
 // import the dataset to be used here

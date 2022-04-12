@@ -20,6 +20,33 @@ genderOptions.addEventListener('click', function(evt){
 	filterData();
 });
 
+
+function garmentList() {
+	axios
+	.get('http://localhost:4017/api/garments')
+		.then(function(result) {
+			searchResultsElem.innerHTML = garmentsTemplate({
+				garments : result.data.garments
+			})
+		});
+}
+
+garmentList()
+
+
+function garmentPrice() {
+	axios
+	.get('http://localhost:4017/api/garments/price/:price')
+		.then(function(result) {
+			searchResultsElem.innerHTML = garmentsTemplate({
+				garments : result.data.garments
+			})
+		});
+}
+
+garmentPrice()
+
+
 function filterData() {
 	axios
 		.get(`/api/garments?gender=${genderFilter}&season=${seasonFilter}`)
@@ -30,14 +57,7 @@ function filterData() {
 		});
 }
 
-// function filterData() {
-// 	axios
-// 		.get(`/api/garments?gender=${genderFilter}&season=${seasonFilter}`)
-// 		.then(function(result) {
-// 			searchResultsElem.innerHTML = garmentsTemplate({
-// 				garments : result.data.garments
-// 			})
-// 		});
+
 
 
 priceRangeElem.addEventListener('change', function(evt){
